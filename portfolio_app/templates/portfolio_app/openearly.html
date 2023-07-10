@@ -1,0 +1,203 @@
+{% extends "main/base_block_project.html" %}
+{% load static %}
+{% block content_body %}
+<h2 class="mb-5">OpenEarly v1.06</h2>
+<h3 class="mb-3">Image</h3>
+<img class="proj-pic-item mb-5" src="{% static 'portfolio_app/img/projects/openearly.png' %}" alt="..." />
+<h3 class="mb-3">Code</h3>
+<pre class="mb-3"><code class="language-python">
+    from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLabel, QLineEdit, QPushButton, QListWidget, QListWidgetItem, QMessageBox, QHBoxLayout, QSizeGrip
+    from PyQt5.QtCore import Qt, QPoint
+    from PyQt5.QtGui import QIcon
+    import qdarkstyle
+    import webbrowser
+    import sys
+    from resources_rc import *
+    
+    # File to store the websites
+    WEBSITE_FILE = "websites.txt"
+    
+    class OpenEarly(QMainWindow):
+        def __init__(self):
+            super().__init__()
+    
+            self.setWindowFlag(Qt.FramelessWindowHint)
+            self.setAttribute(Qt.WA_TranslucentBackground)
+    
+            self.setWindowTitle('OpenEarly')
+            self.setWindowIcon(QIcon(':/World.ico'))
+            self.resize(400, 400)
+            self.center_window()
+    
+            # Create a central widget and set the layout
+            central_widget = QWidget(self)
+            self.setCentralWidget(central_widget)
+            layout = QVBoxLayout(central_widget)
+    
+            # Title bar widget
+            self.title_bar = QWidget(self)
+            self.title_bar.setObjectName("TitleBar")
+            self.title_bar.setFixedHeight(32)
+    
+            title_layout = QHBoxLayout(self.title_bar)
+            title_layout.setContentsMargins(0, 0, 0, 0)
+    
+            self.icon_label = QLabel()
+            self.icon_label.setPixmap(QIcon(':/World.ico').pixmap(24, 24))
+            title_layout.addWidget(self.icon_label)
+    
+            self.title_label = QLabel("OpenEarly")
+            self.title_label.setStyleSheet("color: white;")
+            title_layout.addWidget(self.title_label)
+    
+            title_layout.addStretch()
+    
+            self.minimize_button = QPushButton("—")
+            self.minimize_button.setFixedSize(24, 24)
+            self.minimize_button.setStyleSheet(
+                "QPushButton { color: white; background-color: transparent; }"
+                "QPushButton:hover { background-color: red; }"
+            )
+            title_layout.addWidget(self.minimize_button)
+    
+            self.close_button = QPushButton("✕")
+            self.close_button.setFixedSize(24, 24)
+            self.close_button.setStyleSheet(
+                "QPushButton { color: white; background-color: transparent; }"
+                "QPushButton:hover { background-color: red; }"
+            )
+            title_layout.addWidget(self.close_button)
+    
+            title_layout.setAlignment(Qt.AlignRight)
+    
+            self.minimize_button.clicked.connect(self.showMinimized)
+            self.close_button.clicked.connect(self.close)
+    
+            layout.addWidget(self.title_bar)
+    
+            # Website input
+            website_label = QLabel("Website:")
+            self.website_entry = QLineEdit()
+            layout.addWidget(website_label)
+            layout.addWidget(self.website_entry)
+    
+            # Buttons
+            add_button = QPushButton("Add")
+            add_button.clicked.connect(self.add_website)
+            layout.addWidget(add_button)
+    
+            remove_button = QPushButton("Remove")
+            remove_button.clicked.connect(self.remove_website)
+            layout.addWidget(remove_button)
+    
+            open_button = QPushButton("Open Websites")
+            open_button.clicked.connect(self.open_websites)
+            layout.addWidget(open_button)
+    
+            # Website list
+            self.website_list = QListWidget()
+            self.website_list.setSelectionMode(QListWidget.ExtendedSelection)
+            self.website_list.setDragDropMode(QListWidget.InternalMove)
+            layout.addWidget(self.website_list)
+    
+            # Load existing websites from file
+            self.load_websites()
+    
+            # Add resizing handles
+            self.bottom_right_grip = QSizeGrip(self)
+            layout.addWidget(self.bottom_right_grip, 0, Qt.AlignBottom | Qt.AlignRight)
+    
+            # Initialize variables for dragging
+            self.draggable = False
+            self.offset = QPoint()
+    
+        def center_window(self):
+            screen = QApplication.desktop().screenGeometry()
+            window_size = self.geometry()
+            x = (screen.width() - window_size.width()) // 2
+            y = (screen.height() - window_size.height()) // 2
+            self.move(x, y)
+    
+        def mousePressEvent(self, event):
+            if event.button() == Qt.LeftButton and event.y() <= self.title_bar.height():
+                self.draggable = True
+                self.offset = event.globalPos() - self.pos()
+    
+        def mouseMoveEvent(self, event):
+            if self.draggable:
+                if event.buttons() & Qt.LeftButton:
+                    self.move(event.globalPos() - self.offset)
+    
+        def mouseReleaseEvent(self, event):
+            if event.button() == Qt.LeftButton:
+                self.draggable = False
+    
+        def load_websites(self):
+            with open(WEBSITE_FILE, "r") as file:
+                websites = file.readlines()
+                for website in websites:
+                    website_item = QListWidgetItem(website.strip())
+                    self.website_list.addItem(website_item)
+    
+        def add_website(self):
+            website = self.website_entry.text().strip()
+            if website:
+                with open(WEBSITE_FILE, "a") as file:
+                    file.write(website + "\n")
+                website_item = QListWidgetItem(website)
+                self.website_list.addItem(website_item)
+                self.website_entry.clear()
+    
+        def remove_website(self):
+            selected_items = self.website_list.selectedItems()
+            for item in selected_items:
+                website = item.text()
+                row = self.website_list.row(item)
+                self.website_list.takeItem(row)
+                with open(WEBSITE_FILE, "r+") as file:
+                    lines = file.readlines()
+                    file.seek(0)
+                    file.truncate()
+                    for line in lines:
+                        if line.strip() != website:
+                            file.write(line)
+    
+        def open_websites(self):
+            with open(WEBSITE_FILE, "r") as file:
+                websites = file.readlines()
+                invalid_websites = []
+                for website in websites:
+                    website = website.strip()
+                    if self.is_valid_website(website):
+                        webbrowser.open_new_tab(website)
+                    else:
+                        invalid_websites.append(website)
+    
+                if invalid_websites:
+                    invalid_websites_text = "\n".join(invalid_websites)
+                    error_message = f"The following websites are invalid:\n{invalid_websites_text}"
+                    QMessageBox.critical(self, "Invalid Websites", error_message)
+    
+        @staticmethod
+        def is_valid_website(website):
+            return website.startswith("http://") or website.startswith("https://")
+    
+        def save_website_order(self):
+            with open(WEBSITE_FILE, "w") as file:
+                websites = [self.website_list.item(i).text() for i in range(self.website_list.count())]
+                file.write("\n".join(websites))
+    
+        def closeEvent(self, event):
+            self.save_website_order()
+            super().closeEvent(event)
+    
+    
+    if __name__ == "__main__":
+        app = QApplication(sys.argv)
+        app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+        window = OpenEarly()
+        window.show()
+        sys.exit(app.exec_())
+    
+</code></pre>
+{% endblock content_body %}

@@ -1,0 +1,230 @@
+{% extends "main/base_block_project.html" %}
+{% load static %}
+{% block content_body %}
+<h2 class="mb-5">Blackjack</h2>
+<p class="mb-3">This is the first python game I made when I first learned to code. The code is very bad and unoptimized but, I thought I would share it to show progress</p>
+<h3 class="mb-3">Image</h3>
+<img class="proj-pic-item mb-5" src="{% static 'portfolio_app/img/projects/blackjack.png' %}" alt="..." />
+<h3 class="mb-3">Code (blackjack.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    # Things that need to be imported.
+    import os
+    import random
+    from art import logo
+    from cards_52 import cards
+    from cards_52_reset import cards_reset
+    def clear(): return os.system('cls')
+    
+    
+    def yn_error(yn_another_card, position, scoreboard):
+        """y or n answer checker if you want to play again or get another card"""
+        yn_continue = True
+        while yn_continue:
+            if yn_another_card == True:
+                print("")
+                print(f'{scoreboard[position]["player"]}, it is your turn.')
+                yn_answer = input(
+                    "Type 'y' to get another card or type 'n' to pass: ")
+            else:
+                print("")
+                yn_answer = input(
+                    "Do you want to play a game of Blackjack? Type 'y' or 'n': ")
+            if yn_answer != "y" and yn_answer != "n":
+                print("")
+                print(f"'{yn_answer}' is an invalid input. Try again.")
+            else:
+                yn_continue = False
+                return yn_answer
+    
+    
+    def add_player(position):
+        """Adds aditional players when called"""
+        player_name = input(f"What is the name of player {position + 1}? ").title()
+        new_player_dic = {}
+        new_player_dic["player"] = player_name
+        new_player_dic["cards"] = []
+        new_player_dic["card_total_lower"] = 0
+        new_player_dic["card_total_upper"] = 0
+        new_player_dic["another_card"] = True
+        players.append(new_player_dic)
+    
+    
+    def deal_card(position, scoreboard):
+        """Deals a card for the dealer or current player"""
+        if scoreboard[position]["another_card"] == True:
+            starting_card_key = random.choice(list(cards.keys()))
+            scoreboard[position]["cards"].append(starting_card_key)
+            scoreboard[position]["card_total_lower"] += cards[starting_card_key][0]
+            if cards[starting_card_key][0] == 1:
+                scoreboard[position]["card_total_upper"] += cards[starting_card_key][1]
+            else:
+                scoreboard[position]["card_total_upper"] += cards[starting_card_key][0]
+            cards.pop(starting_card_key)
+            if scoreboard[position]["card_total_upper"] == 21 or scoreboard[position]["card_total_lower"] == 21:
+                scoreboard[position]["another_card"] = False
+            elif scoreboard[position]["card_total_upper"] > 21:
+                scoreboard[position]["card_total_upper"] -= 10
+            if scoreboard[position]["card_total_lower"] > 21:
+                scoreboard[position]["another_card"] = False
+             
+    
+    def score_feedback(position, scoreboard, dealer_over):
+        """Displays the scoreboard for all players"""
+        clear()
+        print(logo)
+        for position in range(len(scoreboard)):
+            if scoreboard[position]["card_total_lower"] == scoreboard[position]["card_total_upper"] or scoreboard[position]["card_total_lower"] > scoreboard[position]["card_total_upper"]:
+                if scoreboard[position]["card_total_lower"] > 21 or scoreboard[position]["card_total_lower"] > scoreboard[position]["card_total_upper"]:
+                    print(f'{scoreboard[position]["player"]}\'s cards: {scoreboard[position]["cards"]} ||| Total value: {scoreboard[position]["card_total_lower"]} ||| {scoreboard[position]["player"]} went over 21 and lost.')
+                    if scoreboard[position]["player"] == "Dealer":
+                        dealer_over = True
+                elif scoreboard[position]["player"] != "Dealer" and game_over:
+                    if scoreboard[0]["card_total_lower"] < scoreboard[position]["card_total_lower"] or dealer_over:
+                        print(f'{scoreboard[position]["player"]}\'s cards: {scoreboard[position]["cards"]} ||| Total value: {scoreboard[position]["card_total_lower"]} ||| {scoreboard[position]["player"]} won.')
+                    elif scoreboard[0]["card_total_lower"] > scoreboard[position]["card_total_lower"]:
+                        print(f'{scoreboard[position]["player"]}\'s cards: {scoreboard[position]["cards"]} ||| Total value: {scoreboard[position]["card_total_lower"]} ||| {scoreboard[position]["player"]} lost.')
+                    elif scoreboard[0]["card_total_lower"] == scoreboard[position]["card_total_lower"]:
+                        print(f'{scoreboard[position]["player"]}\'s cards: {scoreboard[position]["cards"]} ||| Total value: {scoreboard[position]["card_total_lower"]} ||| Its a Draw.')
+                else:
+                    print(f'{scoreboard[position]["player"]}\'s cards: {scoreboard[position]["cards"]} ||| Total value: {scoreboard[position]["card_total_lower"]}')
+            else:
+                print(f'{scoreboard[position]["player"]}\'s cards: {scoreboard[position]["cards"]} ||| Total value: {scoreboard[position]["card_total_lower"]} or {scoreboard[position]["card_total_upper"]}')
+    
+    
+    # The start
+    clear()
+    blackjack = True
+    while blackjack:
+        # This resets the cards everytime the program is ran.
+        cards = cards_reset
+        # Where the players are stored.
+        players = [
+            {
+                "player": "Dealer",
+                "cards": [],
+                "card_total_lower": 0,
+                "card_total_upper": 0,
+                "another_card": True
+            }
+        ]
+        # Added next line of code so the yn_error question can pass.
+        player_number = 0
+        game_over = False
+        dealer_went_over = False
+        q_another_card = False
+        # Do you want to play blackjack
+        yn = yn_error(yn_another_card=q_another_card, position=player_number, scoreboard=players)
+        if yn == "y":
+            q_another_card = True
+            # The game is only played with one 52-deck of cards so, dont add too many players.
+            num_players = int(input("How many players not including the dealer? "))
+            for player_number in range(num_players):
+                add_player(position=player_number)
+            for player_number in range(len(players)):
+                deal_card(position=player_number, scoreboard=players)
+            players[0]["another_card"] = False
+            for player_number in range(len(players)):
+                deal_card(position=player_number, scoreboard=players)
+                score_feedback(position=player_number, scoreboard=players, dealer_over=dealer_went_over)
+            # At this point the dealer should have one card while everyone else should have two. The results should display after.
+            # This asks players who do not have a blackjack and who have not gone over a total of 21 if they want to get another card.
+            for player_number in range(len(players)):
+                while players[player_number]["another_card"] == True:
+                    yn = yn_error(yn_another_card=q_another_card, position=player_number, scoreboard=players)
+                    if yn == "y":
+                        deal_card(position=player_number, scoreboard=players)
+                        score_feedback(position=player_number, scoreboard=players, dealer_over=dealer_went_over)
+                    else:
+                        players[player_number]["another_card"] = False
+                        score_feedback(position=player_number, scoreboard=players, dealer_over=dealer_went_over)
+            # This is where the dealer will start drawing cards. If the dealer has a soft ace with a total value between and including 17 and 21, the dealer will not draw another card.
+            players[0]["another_card"] = True
+            while players[0]["another_card"] == True:
+                deal_card(position=0, scoreboard=players)
+                if players[0]["card_total_lower"] > 16 or players[0]["card_total_upper"] > 16:
+                    players[0]["another_card"] = False
+            # This allows you to stop with a soft ace.
+            for player_number in range(len(players)):
+                if players[player_number]["card_total_lower"] < 22 and players[player_number]["card_total_upper"] < 22:
+                    players[player_number]["card_total_lower"] = players[player_number]["card_total_upper"]
+            # This displays the end results.
+            game_over = True
+            for player_number in range(len(players)):
+                score_feedback(position=player_number, scoreboard=players, dealer_over=dealer_went_over)
+        else:
+            blackjack = False
+    
+</code></pre>
+<h3 class="mb-3">Code (cards_52.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    cards = {
+        "Ace of Clubs": [1, 11],
+        "2 of Clubs": [2],
+        "3 of Clubs": [3],
+        "4 of Clubs": [4],
+        "5 of Clubs": [5],
+        "6 of Clubs": [6],
+        "7 of Clubs": [7],
+        "8 of Clubs": [8],
+        "9 of Clubs": [9],
+        "10 of Clubs": [10],
+        "Jack of Clubs": [10],
+        "Queen of Clubs": [10],
+        "King of Clubs": [10],
+        "Ace of Diamonds": [1, 11],
+        "2 of Diamonds": [2],
+        "3 of Diamonds": [3],
+        "4 of Diamonds": [4],
+        "5 of Diamonds": [5],
+        "6 of Diamonds": [6],
+        "7 of Diamonds": [7],
+        "8 of Diamonds": [8],
+        "9 of Diamonds": [9],
+        "10 of Diamonds": [10],
+        "Jack of Diamonds": [10],
+        "Queen of Diamonds": [10],
+        "King of Diamonds": [10],
+        "Ace of Hearts": [1, 11],
+        "2 of Hearts": [2],
+        "3 of Hearts": [3],
+        "4 of Hearts": [4],
+        "5 of Hearts": [5],
+        "6 of Hearts": [6],
+        "7 of Hearts": [7],
+        "8 of Hearts": [8],
+        "9 of Hearts": [9],
+        "10 of Hearts": [10],
+        "Jack of Hearts": [10],
+        "Queen of Hearts": [10],
+        "King of Hearts": [10],
+        "Ace of Spades": [1, 11],
+        "2 of Spades": [2],
+        "3 of Spades": [3],
+        "4 of Spades": [4],
+        "5 of Spades": [5],
+        "6 of Spades": [6],
+        "7 of Spades": [7],
+        "8 of Spades": [8],
+        "9 of Spades": [9],
+        "10 of Spades": [10],
+        "Jack of Spades": [10],
+        "Queen of Spades": [10],
+        "King of Spades": [10]
+    }
+    
+</code></pre>
+<h3 class="mb-3">Code (art.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    logo = """
+    .------.            _     _            _    _            _    
+    |A_  _ |.          | |   | |          | |  (_)          | |   
+    |( \/ ).-----.     | |__ | | __ _  ___| | ___  __ _  ___| | __
+    | \  /|K /\  |     | '_ \| |/ _` |/ __| |/ / |/ _` |/ __| |/ /
+    |  \/ | /  \ |     | |_) | | (_| | (__|   <| | (_| | (__|   < 
+    `-----| \  / |     |_.__/|_|\__,_|\___|_|\_\ |\__,_|\___|_|\_\\
+          |  \/ K|                            _/ |                
+          `------'                           |__/           
+    """
+    
+</code></pre>
+{% endblock content_body %}

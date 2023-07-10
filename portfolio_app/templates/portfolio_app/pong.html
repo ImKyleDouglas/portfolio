@@ -1,0 +1,236 @@
+{% extends "main/base_block_project.html" %}
+{% load static %}
+{% block content_body %}
+<h2 class="mb-5">2 Player Pong</h2>
+<h3 class="mb-3">Image</h3>
+<img class="proj-pic-item mb-5" src="{% static 'portfolio_app/img/projects/pong.png' %}" alt="..." />
+<h3 class="mb-3">Code (main.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    from turtle import Turtle
+    import random
+    
+    MOVE_DISTANCE = 10
+    
+    class Ball:
+    
+        def __init__(self):
+            self.ball_list = []
+            self.create_ball()
+            self.ball = self.ball_list[0]
+    
+        def create_ball(self):
+            new_ball = Turtle("circle")
+            new_ball.color("white")
+            new_ball.shapesize(stretch_wid=.5, stretch_len=.5)
+            new_ball.penup()
+            new_ball.setheading(self.ball_start())
+            new_ball.goto(0, 0)
+            self.ball_list.append(new_ball)
+    
+        def ball_start(self):
+            ran_list = random.randint(1, 4)
+            if ran_list == 1:
+                return random.randint(5, 75)
+            elif ran_list == 2:
+                return random.randint(105, 175)
+            elif ran_list == 3:
+                return random.randint(185, 255)
+            elif ran_list == 4:
+                return random.randint(285, 355)
+    
+        def move(self):
+            self.ball.forward(MOVE_DISTANCE)
+    
+        def ball_hit_wall(self):
+            if 0 < self.ball.heading() < 90:
+                self.ball.setheading(270 + (90 - self.ball.heading()))
+            elif 90 < self.ball.heading() < 180:
+                self.ball.setheading(270 - (self.ball.heading() - 90))
+            elif 180 < self.ball.heading() < 270:
+                self.ball.setheading(90 - (self.ball.heading() - 270))
+            elif 270 < self.ball.heading() < 360:
+                self.ball.setheading(90 + (270 - self.ball.heading()))
+    
+        def ball_hit_paddle(self):
+            if 0 < self.ball.heading() < 90:
+                self.ball.setheading(90 + (90 - self.ball.heading()))
+            elif 90 < self.ball.heading() < 180:
+                self.ball.setheading(90 - (self.ball.heading() - 90))
+            elif 180 < self.ball.heading() < 270:
+                self.ball.setheading(270 + (270 - self.ball.heading()))
+            elif 270 < self.ball.heading() < 360:
+                self.ball.setheading(270 - (self.ball.heading() - 270))
+    
+</code></pre>
+<h3 class="mb-3">Code (paddles.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    from turtle import Turtle
+
+    STARTING_POSITIONS = [(-360, 0), (360, 0)]
+    MOVE_DISTANCE = 40
+    UP = 90
+    DOWN = 270
+    LEFT = 180
+    RIGHT = 0
+    
+    class Paddle:
+    
+        def __init__(self):
+            self.paddle = []
+            self.create_paddle()
+            self.player_1 = self.paddle[0]
+            self.player_2 = self.paddle[1]
+    
+        def create_paddle(self):
+            for position in STARTING_POSITIONS:
+                new_paddle = Turtle("square")
+                new_paddle.color("white")
+                new_paddle.shapesize(stretch_wid=.5, stretch_len=5)
+                new_paddle.penup()
+                new_paddle.setheading(UP)
+                new_paddle.goto(position)
+                self.paddle.append(new_paddle)
+    
+        def player_1_up(self):
+            if self.player_1.ycor() < 230:
+                self.player_1.setheading(UP)
+                self.player_1.forward(MOVE_DISTANCE)
+    
+        def player_1_down(self):
+            if self.player_1.ycor() > -210:
+                self.player_1.setheading(DOWN)
+                self.player_1.forward(MOVE_DISTANCE)
+    
+        def player_2_up(self):
+            if self.player_2.ycor() < 230:
+                self.player_2.setheading(UP)
+                self.player_2.forward(MOVE_DISTANCE)
+    
+        def player_2_down(self):
+            if self.player_2.ycor() > -210:
+                self.player_2.setheading(DOWN)
+                self.player_2.forward(MOVE_DISTANCE)
+    
+        def player_reset(self):
+            self.player_1.goto(STARTING_POSITIONS[0])
+            self.player_2.goto(STARTING_POSITIONS[1])
+    
+</code></pre>
+<h3 class="mb-3">Code (ball.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    from turtle import Turtle
+    import random
+    
+    MOVE_DISTANCE = 10
+    
+    class Ball:
+    
+        def __init__(self):
+            self.ball_list = []
+            self.create_ball()
+            self.ball = self.ball_list[0]
+    
+        def create_ball(self):
+            new_ball = Turtle("circle")
+            new_ball.color("white")
+            new_ball.shapesize(stretch_wid=.5, stretch_len=.5)
+            new_ball.penup()
+            new_ball.setheading(self.ball_start())
+            new_ball.goto(0, 0)
+            self.ball_list.append(new_ball)
+    
+        def ball_start(self):
+            ran_list = random.randint(1, 4)
+            if ran_list == 1:
+                return random.randint(5, 75)
+            elif ran_list == 2:
+                return random.randint(105, 175)
+            elif ran_list == 3:
+                return random.randint(185, 255)
+            elif ran_list == 4:
+                return random.randint(285, 355)
+    
+        def move(self):
+            self.ball.forward(MOVE_DISTANCE)
+    
+        def ball_hit_wall(self):
+            if 0 < self.ball.heading() < 90:
+                self.ball.setheading(270 + (90 - self.ball.heading()))
+            elif 90 < self.ball.heading() < 180:
+                self.ball.setheading(270 - (self.ball.heading() - 90))
+            elif 180 < self.ball.heading() < 270:
+                self.ball.setheading(90 - (self.ball.heading() - 270))
+            elif 270 < self.ball.heading() < 360:
+                self.ball.setheading(90 + (270 - self.ball.heading()))
+    
+        def ball_hit_paddle(self):
+            if 0 < self.ball.heading() < 90:
+                self.ball.setheading(90 + (90 - self.ball.heading()))
+            elif 90 < self.ball.heading() < 180:
+                self.ball.setheading(90 - (self.ball.heading() - 90))
+            elif 180 < self.ball.heading() < 270:
+                self.ball.setheading(270 + (270 - self.ball.heading()))
+            elif 270 < self.ball.heading() < 360:
+                self.ball.setheading(270 - (self.ball.heading() - 270))
+    
+</code></pre>
+<h3 class="mb-3">Code (scoreboard.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    from turtle import Turtle
+
+    ALIGNMENT = "center"
+    FONT = ("Courier", 24, "normal")
+    
+    SCORE_POSITIONS = [(-200, 260), (200, 260)]
+    
+    class Scoreboard():
+    
+        def __init__(self):
+            self.scoreboard = []
+            self.create_scoreboard()
+            self.player_1 = self.scoreboard[0]
+            self.player_2 = self.scoreboard[1]
+            self.update_scoreboard()
+            self.dashed_line()
+    
+    
+        def create_scoreboard(self):
+            for position in SCORE_POSITIONS:
+                new_score = Turtle()
+                new_score.color("white")
+                new_score.penup()
+                new_score.hideturtle()
+                new_score.goto(position)
+                new_score.score = 0
+                self.scoreboard.append(new_score)
+    
+        def update_scoreboard(self):
+            self.player_1.write(f"Score: {self.player_1.score}", align=ALIGNMENT, font=FONT)
+            self.player_2.write(f"Score: {self.player_2.score}", align=ALIGNMENT, font=FONT)
+    
+        def dashed_line(self):
+            line = Turtle()
+            line.color("white")
+            line.hideturtle()
+            line.pensize(5)
+            line.penup()
+            line.goto(0, 300)
+            line.setheading(270)
+            while line.ycor() >= -300:
+                line.pendown()
+                line.forward(20)
+                line.penup()
+                line.forward(20)
+    
+        def increase_score_p1(self):
+            self.player_1.score += 1
+            self.player_1.clear()
+            self.update_scoreboard()
+    
+        def increase_score_p2(self):
+            self.player_2.score += 1
+            self.player_2.clear()
+            self.update_scoreboard()
+    
+</code></pre>
+{% endblock content_body %}

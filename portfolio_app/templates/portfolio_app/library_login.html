@@ -1,0 +1,256 @@
+{% extends "main/base_block_project.html" %}
+{% load static %}
+{% block content_body %}
+<h2 class="mb-5">Django Library Login</h2>
+<p class="mb-3">These are only the most significant code files.</p>
+<h3 class="mb-3">Image</h3>
+<img class="proj-pic-item mb-5" src="{% static 'portfolio_app/img/projects/library_login.png' %}" alt="..." />
+<h3 class="mb-3">Code (urls.py) (site)</h3>
+<pre class="mb-3"><code class="language-python">
+    from django.contrib import admin
+    from django.urls import path, include
+    from django.views.generic import RedirectView
+    
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('catalog/',include('catalog.urls')),
+        path('',RedirectView.as_view(url='catalog/')),
+        path('accounts/',include('django.contrib.auth.urls'))
+    ]
+
+</code></pre>
+<h3 class="mb-3">Code (urls.py) (app)</h3>
+<pre class="mb-3"><code class="language-python">
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('',views.index,name='index'),
+    path('create_book/',views.BookCreate.as_view(),name='create_book'),
+    path('book/<int:pk>/',views.BookDetail.as_view(),name='book_detail'),
+    path('my_view',views.my_view,name='my_view'),
+    path('signup/',views.SignUpView.as_view(),name='signup'),
+    path('profile/',views.CheckedOutBooksByUserView.as_view(),name='profile')
+]
+
+</code></pre>
+<h3 class="mb-3">Code (views.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    from django.shortcuts import render
+    from django.http import HttpResponse
+    from .models import Book,Author,BookInstance,Genre,Language
+    from django.views.generic import CreateView,DetailView,ListView
+    from django.contrib.auth.decorators import login_required
+    from django.contrib.auth.mixins import LoginRequiredMixin
+    from django.contrib.auth.forms import UserCreationForm
+    from django.urls import reverse_lazy
+    
+    # Create your views here.
+    def index(request):
+        
+        num_books = Book.objects.all().count()
+        num_instances = BookInstance.objects.all().count()
+        num_instances_avail = BookInstance.objects.filter(status__exact='a').count()
+    
+        context = {
+            'num_books':num_books,
+            'num_instances':num_instances,
+            'num_instances_avail':num_instances_avail
+        }
+        return render(request,'catalog/index.html',context=context)
+    
+    class BookCreate(LoginRequiredMixin,CreateView):
+        model = Book
+        fields = '__all__'
+    
+    class BookDetail(DetailView):
+        model = Book
+        
+    @login_required
+    def my_view(request):
+        return render(request,'catalog/my_view.html')
+    
+    class SignUpView(CreateView):
+        form_class = UserCreationForm
+        success_url = reverse_lazy('login')
+        template_name = 'catalog/signup.html'
+    
+    class CheckedOutBooksByUserView(LoginRequiredMixin,ListView):
+        model = BookInstance
+        template_name = 'catalog/profile.html'
+        paginate_by = 5
+    
+        def get_queryset(self):
+            return BookInstance.objects.filter(borrower=self.request.user)
+    
+</code></pre>
+<h3 class="mb-3">Code (models.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    from django.db import models
+    from django.urls import reverse
+    import uuid
+    from django.contrib.auth.models import User
+    
+    # Create your models here.
+    class Genre(models.Model):
+    
+        name= models.CharField(max_length=150)
+    
+        def __str__(self):
+            return self.name
+    
+    class Language(models.Model):
+        name = models.CharField(max_length=200)
+        def __str__(self):
+            return self.name
+    
+    class Book(models.Model):
+    
+        title = models.CharField(max_length=200)
+        author = models.ForeignKey('Author',on_delete=models.SET_NULL,null=True)
+        summary = models.TextField(max_length=600)
+        isbn = models.CharField('ISBN',max_length=13,unique=True)
+        genre = models.ManyToManyField(Genre)
+        language = models.ForeignKey('Language',on_delete=models.SET_NULL,null=True)
+    
+        def __str__(self):
+            return self.title
+    
+        def get_absolute_url(self):
+            return reverse("book_detail", kwargs={"pk": self.pk})
+    
+    class Author(models.Model):
+        first_name = models.CharField(max_length=200)
+        last_name = models.CharField(max_length=200)
+        date_of_birth = models.DateField(null=True,blank=True)
+    
+        class Meta:
+            ordering = ['last_name','first_name']
+    
+        def get_absolute_url(self):
+            return reverse("author_detail", kwargs={"pk": self.pk})
+        
+        def __str__(self):
+            return f"{self.last_name} , {self.first_name}"
+    
+    class BookInstance(models.Model):
+    
+        id = models.UUIDField(primary_key=True,default=uuid.uuid4)
+        book = models.ForeignKey('Book',on_delete=models.RESTRICT,null=True)
+        imprint = models.CharField(max_length=200)
+        due_back = models.DateField(null=True,blank=True)
+        borrower = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
+    
+        LOAN_STATUS = (
+            ('m','Maintenance'),
+            ('o','On Loan'),
+            ('a','Available'),
+            ('r','Reserved'),
+        )
+    
+        status = models.CharField(max_length=1,choices=LOAN_STATUS,blank=True,default='m')
+    
+        class Meta:
+            ordering = ['due_back']
+    
+        def __str__(self):
+            return f'{self.id} ({self.book.title})'
+    
+</code></pre>
+<h3 class="mb-3">Code (admin.py)</h3>
+<pre class="mb-3"><code class="language-python">
+    from django.contrib import admin
+    from .models import Author,Genre,Language,Book,BookInstance
+    
+    # Register your models here.
+    admin.site.register(Author)
+    admin.site.register(Genre)
+    admin.site.register(Language)
+    admin.site.register(Book)
+    admin.site.register(BookInstance)
+    
+</code></pre>
+<h3 class="mb-3">Code (index.html)</h3>
+<pre class="mb-3"><code class="language-markup">
+    &lt;!DOCTYPE html>
+    &lt;html lang="en">
+    &lt;head>
+        &lt;meta charset="UTF-8">
+        &lt;meta http-equiv="X-UA-Compatible" content="IE=edge">
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+        &lt;title>Document&lt;/title>
+    &lt;/head>
+    &lt;body>
+        &lt;h1>HOMEPAGE&lt;/h1>
+        &lt;p>Total Books: &#123;&#123;num_books&#125;&#125;&lt;/p>
+        &lt;p>Num Avalible: &#123;&#123;num_instances_avail&#125;&#125;&lt;/p>
+        &#123;% if user.is_authenticated %&#125;
+            &lt;p>You are logged in&lt;/p>
+            &lt;p>Welcome: &#123;&#123;user.get_username&#125;&#125;&lt;/p>
+            &lt;a href="&#123;% url 'logout' %&#125;?next=&#123;&#123;request.path&#125;&#125;">LOGOUT HERE&lt;/a>
+        &#123;% else %&#125;
+            &lt;p>You are not logged in&lt;/p>
+            &lt;a href="&#123;% url 'login' %&#125;?next=&#123;&#123;request.path&#125;&#125;">LOGIN HERE&lt;/a>
+        &#123;% endif %&#125;
+    &lt;/body>
+    &lt;/html>
+    
+</code></pre>
+<h3 class="mb-3">Code (longin.html)</h3>
+<pre class="mb-3"><code class="language-markup">
+&#123;% if form.errors %&#125;
+    &lt;p>Your username or password was incorrect. Try again.&lt;/p>
+&#123;% endif %&#125;
+
+&#123;% if next %&#125;
+    &#123;% if user.is_authenticated %&#125;
+        &lt;p>You dont have permission for this page&lt;/p>
+    &#123;% else %&#125;
+        &lt;p>Please login to see this page&lt;/p>
+    &#123;% endif %&#125;
+&#123;% endif %&#125;
+
+&lt;form method='POST' action="&#123;% url 'login' %&#125;">
+    &#123;% csrf_token %&#125;
+    &#123;&#123;form.username.label_tag&#125;&#125;
+    &#123;&#123;form.username&#125;&#125;
+
+    &#123;&#123;form.password.label_tag&#125;&#125;
+    &#123;&#123;form.password&#125;&#125;
+    &lt;input type="submit" value='login'>
+    &lt;input type="hidden" name='next' value='&#123;&#123;next&#125;&#125;'>
+
+&lt;/form>
+
+</code></pre>
+<h3 class="mb-3">Code (book_form.html)</h3>
+<pre class="mb-3"><code class="language-markup">
+    &lt;h1>Create new Book&lt;/h1>
+    &lt;form method="POST">
+        &#123;% csrf_token %&#125;
+        &#123;&#123;form.as_p&#125;&#125;
+        &lt;input type="submit" value='CREATE'>
+    &lt;/form>
+    
+</code></pre>
+<h3 class="mb-3">Code (profile.html)</h3>
+<pre class="mb-3"><code class="language-markup">
+    &lt;h1>Welcome to your profile&lt;/h1>
+    &lt;h2>Here are your books checked out:&lt;/h2>
+    
+    &#123;% for book in bookinstance_list %&#125;
+        &lt;p>&#123;&#123;book&#125;&#125;&lt;/p>
+    &#123;% endfor %&#125;
+    
+</code></pre>
+<h3 class="mb-3">Code (signup.html)</h3>
+<pre class="mb-3"><code class="language-markup">
+    &lt;h1>Register new user here&lt;/h1>
+    &lt;form method="POST">
+        &#123;% csrf_token %&#125;
+        &#123;&#123;form.as_p&#125;&#125;
+        &lt;input type="submit" value="signup">
+    &lt;/form>
+    
+</code></pre>
+{% endblock content_body %}

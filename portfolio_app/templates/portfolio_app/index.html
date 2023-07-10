@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Discover Kyle Puvogel's innovative web projects, coding expertise in Python, Django, OpenCV, JavaScript, and more at their portfolio website." />
+        <meta name="author" content="Kyle Puvogel" />
+        <title>Kyle Puvogel | Portfolio</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'portfolio_app/img/favicon/Pf.ico' %}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+        <!-- Bootstrap CSS v5.3.0 -->
+        <link href="{% static 'portfolio_app/css/bootstrap.css' %}" rel="stylesheet" />
+        <!-- Core theme CSS-->
+        <link href="{% static 'portfolio_app/css/styles.css' %}" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">
+                <span class="d-block d-lg-none">Kyle Puvogel</span>
+                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{% static 'portfolio_app/img/profile_pic/profile.png' %}" alt="..." /></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#experience">Experience</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#interests">Interests</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#projects">Projects</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Page Content-->
+        <div class="container-fluid p-0">
+            <!-- About-->
+            <section class="resume-section" id="about">
+                <div class="resume-section-content">
+                    <h1 class="mb-0">
+                        Kyle
+                        <span class="text-primary">Puvogel</span>
+                    </h1>
+                    <div class="subheading">
+                        Overland Park, Kansas · (785) 288-0244 ·
+                        <a href="mailto:name@email.com">kylepuvogel@gmail.com</a>
+                    </div>
+                    <div class="subheading mb-5">
+                        Open to relocation on a global level
+                    </div>
+                    <p class="lead mb-5">My strength lies in Python, where I foster collaborative thinking to enhance the overall value proposition. As a full-stack engineer, I possess the capabilities to craft exceptional and unique web experiences.</p>
+                    <div class="social-icons">
+                        <a class="social-icon" href="https://github.com/ImKyleDouglas" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                        <a class="social-icon" href="https://www.linkedin.com/in/kyle-puvogel-8b9309191/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+                        {% comment %} <a class="social-icon" href="#!"><i class="fab fa-twitter"></i></a>
+                        <a class="social-icon" href="#!"><i class="fab fa-facebook-f"></i></a> {% endcomment %}
+                    </div>
+                </div>
+            </section>
+            <hr class="m-0" />
+            <!-- Education-->
+            <section class="resume-section" id="education">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Education</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Udemy</h3>
+                            <div class="subheading mb-3">Online Certificates</div>
+                            <div>The Complete Web Development Bootcamp | Dr. Angela Yu</div>
+                            <div>Django 4 and Python Full-Stack Developer Masterclass | Jose Portilla</div>
+                            <div>Python for Computer Vision with OpenCV and Deep Learning | Jose Portilla</div>
+                            <div>100 Days of Code: The Complete Python Pro Bootcamp | Dr. Angela Yu</div>
+                            <div>The Web Developer Bootcamp | Colt Steele</div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">Completion Date | Ongoing</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">ADOBE CREATIVE SUITE</h3>
+                            <div class="subheading mb-3">All Software</div>
+                            <div>Photoshop, Illustrator, InDesign, XD, Premiere Pro, After Effects, Audition, Animate, Dimension, Lightroom Classic</div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">Completion Date | June 2022</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Kansas State University</h3>
+                            <div class="subheading mb-3">Bachelor of Science</div>
+                            <div>Business Administration - Entrepreneurship</div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">Graduation Date | December 2020</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Kansas State University</h3>
+                            <div class="subheading mb-3">Bachelor of Science</div>
+                            <div>Apparel & Textiles - Apparel Marketing</div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">Graduation Date | December 2020</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">London College of Fashion</h3>
+                            <div class="subheading mb-3">Six Classes | Twelve Credit Hours</div>
+                            <div>Styling, Product Development, Marketing, Visuals, Fashion Media, and Journalism</div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">Graduation Date | Summer 2018</span></div>
+                    </div>
+                </div>
+            </section>
+            <hr class="m-0" />
+            <!-- Experience-->
+            <section class="resume-section" id="experience">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Experience</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Chef & Inventory Analyst</h3>
+                            <div class="subheading mb-3">The Country Cabin</div>
+                            <p>Full time | Cooked majority of food | Maintaining inventory levels | Ordering supplies</p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">November 2014 – June 2017</span></div>
+                    </div>
+                    <div class="subheading mb-3">Skills Required for a Chef</div>
+                    <ul class="fa-ul mb-0">
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Strong leadership and management skills
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Excellent communication and interpersonal skills
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Ability to delegate tasks effectively
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Problem-solving and decision-making abilities
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Adaptability and flexibility in a fast-paced environment
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Exceptional customer service skills
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Knowledge of food safety and sanitation regulations
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Ability to work well under pressure
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Organizational and multitasking skills
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Attention to detail and quality control
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <hr class="m-0" />
+            <!-- Skills-->
+            <section class="resume-section" id="skills">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Skills</h2>
+                    <div class="subheading mb-3">Technologies and Languages</div>
+                    <ul class="list-inline dev-icons">
+                        <li class="list-inline-item"><i class="fab fa-python"></i></li>
+                        <li class="list-inline-item"><i class="fab fa-html5"></i></li>
+                        <li class="list-inline-item"><i class="fab fa-css3-alt"></i></li>
+                        <li class="list-inline-item"><i class="fab fa-js-square"></i></li>
+                    </ul>
+                    <p>Python | HTML | CSS | JavaScript | SQLite | SQL | TI-Basic</p>
+                    <p>PyQt5 | Django | Bootstrap |  API JSON | Selenium | Pandas | Tkinter | Turtle | OpenCV | Git | Docker</p>
+                    <div class="subheading mb-3">Web Workflow</div>
+                    <ul class="fa-ul  mb-3">
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Mobile-First, Responsive Design
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Cross Browser Testing & Debugging
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Cross Functional Teams
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            Bootstrap Development
+                        </li>
+                    </ul>
+                    <div class="subheading mb-3">Adobe</div>
+                    <ul class="list-inline dev-icons">
+                        <li class="list-inline-item"><i class="fa-regular fa-image"></i></li>
+                        <li class="list-inline-item"><i class="fa-solid fa-video"></i></li>
+                    </ul>
+                    <p>Photoshop | Illustrator | InDesign | XD | Premiere Pro | After Effects | Audition | Animate | Dimension | Lightroom Classic</p>
+                    <div class="subheading mb-3">Microsoft</div>
+                    <ul class="list-inline dev-icons">
+                        <li class="list-inline-item"><i class="fa-regular fa-file-excel"></i></li>
+                        <li class="list-inline-item"><i class="fa-regular fa-file-word"></i></li>
+                        <li class="list-inline-item"><i class="fa-regular fa-file-powerpoint"></i></li>
+                    </ul>
+                    <p>Excel | Word | PowerPoint</p>
+                </div>
+            </section>
+            <hr class="m-0" />
+            <!-- Interests-->
+            <section class="resume-section" id="interests">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Interests & Hobbies</h2>
+                    <p>My interests and hobbies not only bring joy and fulfillment but also align with my pursuit as a software engineer. By engaging in activities such as weightlifting and biking, I develop discipline and perseverance, which are essential traits in coding. Skiing during winter highlights my ability to adapt to new environments. Traveling and experiencing different cultures foster open-mindedness and creative thinking. Cooking reflects my attention to detail and precision, paralleling the meticulous nature of coding. Setting up a NAS for media sharing showcases my passion for exploring new technologies. Sharing open-source code on GitHub demonstrates my commitment to collaboration and contributing to the developer community.</p>
+                    <p class="mb-0">While I prioritize studying over TV shows and video games, my exposure to The Last of Us and playing Only Up! reflects an appreciation for storytelling and interactive experiences that can inspire innovative thinking. Watching the Valorant pro scene serves as a source of inspiration and a way to stay connected to the evolving trends in the field. Overall, my fascination with technology and computers drives my desire to continually expand my coding knowledge and skills in both familiar and new programming languages.</p>
+                </div>
+            </section>
+            <hr class="m-0" />
+            <!-- Projects-->
+            <section class="resume-section " id="projects">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Projects</h2>
+                    <div class="button-group filters-button-group">
+                        <button class="button is-checked" data-filter="*">ALL</button>
+                        <button class="button" data-filter=".pyqt5">PyQt5</button>
+                        <button class="button" data-filter=".django">Django</button>
+                        <button class="button" data-filter=".opencv">OpenCV</button>
+                        <button class="button" data-filter=".turtle">Turtle</button>
+                        <button class="button" data-filter=".other">Other</button>
+                    </div>
+                    <div class="grid">
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='jellyfin_music_organizer' %}"><img class="element-item pyqt5" src="{% static 'portfolio_app/img/projects/jellyfin_music_organizer.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='hand_convex' %}"><img class="element-item opencv" src="{% static 'portfolio_app/img/projects/hand_convex.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='library_login' %}"><img class="element-item django" src="{% static 'portfolio_app/img/projects/library_login.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='folder_factory' %}"><img class="element-item pyqt5" src="{% static 'portfolio_app/img/projects/folder_factory.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='openearly' %}"><img class="element-item pyqt5" src="{% static 'portfolio_app/img/projects/openearly.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='pong' %}"><img class="element-item turtle" src="{% static 'portfolio_app/img/projects/pong.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='states_game' %}"><img class="element-item other" src="{% static 'portfolio_app/img/projects/states_game.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='model_forms' %}"><img class="element-item django" src="{% static 'portfolio_app/img/projects/model_forms.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='snake_game' %}"><img class="element-item turtle" src="{% static 'portfolio_app/img/projects/snake_game.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='turtle_crossing' %}"><img class="element-item turtle" src="{% static 'portfolio_app/img/projects/turtle_crossing.png' %}" alt="..." /></a>
+                      <a href="{% url 'portfolio_app:project_with_link' project_title='blackjack' %}"><img class="element-item other" src="{% static 'portfolio_app/img/projects/blackjack.png' %}" alt="..." /></a>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Bootstrap JS v5.3.0-->
+        <script src="{% static 'portfolio_app/js/bootstrap.bundle.js' %}"></script>
+        <!-- jQuery v3.7.0-->
+        <script src="{% static 'portfolio_app/js/jquery.3.7.0.js' %}"></script>
+        <!-- Isotope PACKAGED v3.0.6 -->
+        <script src="{% static 'portfolio_app/js/isotope-docs.min.js' %}"></script>
+        <!-- Isotope imagesLoaded v5.0.0 -->
+        <script src="{% static 'portfolio_app/js/imagesloaded.pkgd.min.js' %}"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'portfolio_app/js/scripts.js' %}"></script>
+    </body>
+</html>
